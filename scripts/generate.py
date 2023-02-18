@@ -17,6 +17,7 @@ from packaging.specifiers import SpecifierSet
 from packaging.version import Version
 from rich.console import Console
 
+
 SCRIPT_CONSTRAINTS = {
     "default": {
         "pip": "",
