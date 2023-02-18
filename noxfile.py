@@ -1,3 +1,4 @@
+import shutil
 import textwrap
 import webbrowser
 from pathlib import Path
@@ -28,6 +29,8 @@ def check(session):
 
     # Get rid of provided-by-nox pip
     session.run("python", "-m", "pip", "uninstall", "pip", "--yes")
+    # Run the pip.pyz file
+    session.run("python", "scripts/check_zipapp.py", str(public / "pip.pyz"), "--version")
     # Run the get-pip.py file
     session.run("python", str(location))
     # Ensure that pip is installed
@@ -38,7 +41,10 @@ def check(session):
 @nox.session
 def generate(session):
     """Update the scripts, to the latest versions."""
-    session.install("packaging", "requests", "cachecontrol[filecache]", "rich")
+    session.install("packaging", "requests", "cachecontrol[filecache]", "rich", "pkg_metadata")
+
+    public = Path("public")
+    shutil.rmtree(public, ignore_errors=True)
 
     session.run("python", "scripts/generate.py")
 
